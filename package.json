@@ -1,0 +1,26 @@
+{
+  "name": "raizes-do-nordeste-api",
+  "version": "1.0.0",
+  "description": "REST API for managing users, orders, inventory, and payments for the Raízes do Nordeste restaurant chain. Built with Node.js and TypeScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amandabcarneiro9/raizes-do-nordeste-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/amandabcarneiro9/raizes-do-nordeste-api/issues"
+  },
+  "homepage": "https://github.com/amandabcarneiro9/raizes-do-nordeste-api#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
