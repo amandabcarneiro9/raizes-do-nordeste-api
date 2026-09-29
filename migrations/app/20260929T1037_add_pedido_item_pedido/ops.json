@@ -1,0 +1,404 @@
+[
+  {
+    "id": "table.ItemPedido",
+    "label": "Create table \"ItemPedido\"",
+    "summary": "Creates table \"ItemPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ItemPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"ItemPedido\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ItemPedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"ItemPedido\"",
+        "sql": "CREATE TABLE \"public\".\"ItemPedido\" (\n  \"id\" text NOT NULL,\n  \"pedidoId\" text NOT NULL,\n  \"precoUnitario\" numeric NOT NULL,\n  \"produtoId\" text NOT NULL,\n  \"quantidade\" int4 NOT NULL,\n  \"subtotal\" numeric NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ItemPedido\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ItemPedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Pedido",
+    "label": "Create table \"Pedido\"",
+    "summary": "Creates table \"Pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Pedido\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Pedido\"",
+        "sql": "CREATE TABLE \"public\".\"Pedido\" (\n  \"atualizadoEm\" timestamptz DEFAULT (now()) NOT NULL,\n  \"canalPedido\" text NOT NULL,\n  \"clienteId\" text,\n  \"criadoEm\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"status\" text DEFAULT 'CRIADO' NOT NULL,\n  \"unidadeId\" text NOT NULL,\n  \"valorTotal\" numeric NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Pedido_canalPedido_check_96be225e\" CHECK (\"canalPedido\" IN ('APP', 'TOTEM', 'BALCAO', 'PICKUP', 'WEB')),\n  CONSTRAINT \"Pedido_status_check_e61dac9d\" CHECK (\"status\" IN ('CRIADO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'EM_PREPARACAO', 'PRONTO', 'ENTREGUE', 'CANCELADO'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Pedido\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ItemPedido.ItemPedido_pedidoId_idx_4742647d",
+    "label": "Create index \"ItemPedido_pedidoId_idx_4742647d\" on \"ItemPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ItemPedido_pedidoId_idx_4742647d",
+        "table": "ItemPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ItemPedido_pedidoId_idx_4742647d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ItemPedido_pedidoId_idx_4742647d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ItemPedido_pedidoId_idx_4742647d\"",
+        "sql": "CREATE INDEX \"ItemPedido_pedidoId_idx_4742647d\" ON \"public\".\"ItemPedido\" (\"pedidoId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ItemPedido_pedidoId_idx_4742647d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ItemPedido_pedidoId_idx_4742647d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ItemPedido.ItemPedido_produtoId_idx_eb62fdb9",
+    "label": "Create index \"ItemPedido_produtoId_idx_eb62fdb9\" on \"ItemPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ItemPedido_produtoId_idx_eb62fdb9",
+        "table": "ItemPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ItemPedido_produtoId_idx_eb62fdb9\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ItemPedido_produtoId_idx_eb62fdb9\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ItemPedido_produtoId_idx_eb62fdb9\"",
+        "sql": "CREATE INDEX \"ItemPedido_produtoId_idx_eb62fdb9\" ON \"public\".\"ItemPedido\" (\"produtoId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ItemPedido_produtoId_idx_eb62fdb9\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ItemPedido_produtoId_idx_eb62fdb9\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Pedido.Pedido_clienteId_idx_7ae16308",
+    "label": "Create index \"Pedido_clienteId_idx_7ae16308\" on \"Pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Pedido_clienteId_idx_7ae16308",
+        "table": "Pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Pedido_clienteId_idx_7ae16308\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pedido_clienteId_idx_7ae16308\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Pedido_clienteId_idx_7ae16308\"",
+        "sql": "CREATE INDEX \"Pedido_clienteId_idx_7ae16308\" ON \"public\".\"Pedido\" (\"clienteId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Pedido_clienteId_idx_7ae16308\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pedido_clienteId_idx_7ae16308\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Pedido.Pedido_unidadeId_idx_af675c1c",
+    "label": "Create index \"Pedido_unidadeId_idx_af675c1c\" on \"Pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Pedido_unidadeId_idx_af675c1c",
+        "table": "Pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Pedido_unidadeId_idx_af675c1c\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pedido_unidadeId_idx_af675c1c\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Pedido_unidadeId_idx_af675c1c\"",
+        "sql": "CREATE INDEX \"Pedido_unidadeId_idx_af675c1c\" ON \"public\".\"Pedido\" (\"unidadeId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Pedido_unidadeId_idx_af675c1c\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pedido_unidadeId_idx_af675c1c\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.ItemPedido.ItemPedido_pedidoId_fkey",
+    "label": "Add foreign key \"ItemPedido_pedidoId_fkey\" on \"ItemPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "ItemPedido_pedidoId_fkey",
+        "table": "ItemPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"ItemPedido_pedidoId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ItemPedido_pedidoId_fkey",
+          "public",
+          "\"public\".\"ItemPedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"ItemPedido_pedidoId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"ItemPedido\"\nADD CONSTRAINT \"ItemPedido_pedidoId_fkey\"\nFOREIGN KEY (\"pedidoId\")\nREFERENCES \"public\".\"Pedido\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"ItemPedido_pedidoId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ItemPedido_pedidoId_fkey",
+          "public",
+          "\"public\".\"ItemPedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.ItemPedido.ItemPedido_produtoId_fkey",
+    "label": "Add foreign key \"ItemPedido_produtoId_fkey\" on \"ItemPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "ItemPedido_produtoId_fkey",
+        "table": "ItemPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"ItemPedido_produtoId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ItemPedido_produtoId_fkey",
+          "public",
+          "\"public\".\"ItemPedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"ItemPedido_produtoId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"ItemPedido\"\nADD CONSTRAINT \"ItemPedido_produtoId_fkey\"\nFOREIGN KEY (\"produtoId\")\nREFERENCES \"public\".\"Produto\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"ItemPedido_produtoId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ItemPedido_produtoId_fkey",
+          "public",
+          "\"public\".\"ItemPedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Pedido.Pedido_clienteId_fkey",
+    "label": "Add foreign key \"Pedido_clienteId_fkey\" on \"Pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Pedido_clienteId_fkey",
+        "table": "Pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Pedido_clienteId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Pedido_clienteId_fkey",
+          "public",
+          "\"public\".\"Pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Pedido_clienteId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Pedido\"\nADD CONSTRAINT \"Pedido_clienteId_fkey\"\nFOREIGN KEY (\"clienteId\")\nREFERENCES \"public\".\"Cliente\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Pedido_clienteId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Pedido_clienteId_fkey",
+          "public",
+          "\"public\".\"Pedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Pedido.Pedido_unidadeId_fkey",
+    "label": "Add foreign key \"Pedido_unidadeId_fkey\" on \"Pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Pedido_unidadeId_fkey",
+        "table": "Pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Pedido_unidadeId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Pedido_unidadeId_fkey",
+          "public",
+          "\"public\".\"Pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Pedido_unidadeId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Pedido\"\nADD CONSTRAINT \"Pedido_unidadeId_fkey\"\nFOREIGN KEY (\"unidadeId\")\nREFERENCES \"public\".\"Unidade\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Pedido_unidadeId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Pedido_unidadeId_fkey",
+          "public",
+          "\"public\".\"Pedido\""
+        ]
+      }
+    ]
+  }
+]

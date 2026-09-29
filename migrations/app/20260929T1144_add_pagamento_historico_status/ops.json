@@ -1,0 +1,284 @@
+[
+  {
+    "id": "dropDefault.Pedido.atualizadoEm",
+    "label": "Drop default on \"Pedido\".\"atualizadoEm\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "atualizadoEm",
+        "table": "Pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"atualizadoEm\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Pedido",
+          "atualizadoEm"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop default on \"atualizadoEm\"",
+        "sql": "ALTER TABLE \"public\".\"Pedido\" ALTER COLUMN \"atualizadoEm\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"atualizadoEm\" has no default",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "Pedido",
+          "atualizadoEm"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.HistoricoStatusPedido",
+    "label": "Create table \"HistoricoStatusPedido\"",
+    "summary": "Creates table \"HistoricoStatusPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "HistoricoStatusPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"HistoricoStatusPedido\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HistoricoStatusPedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"HistoricoStatusPedido\"",
+        "sql": "CREATE TABLE \"public\".\"HistoricoStatusPedido\" (\n  \"criadoEm\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"observacao\" text,\n  \"pedidoId\" text NOT NULL,\n  \"status\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"HistoricoStatusPedido_status_check_e61dac9d\" CHECK (\"status\" IN ('CRIADO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'EM_PREPARACAO', 'PRONTO', 'ENTREGUE', 'CANCELADO'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"HistoricoStatusPedido\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HistoricoStatusPedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Pagamento",
+    "label": "Create table \"Pagamento\"",
+    "summary": "Creates table \"Pagamento\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Pagamento"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Pagamento\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pagamento\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Pagamento\"",
+        "sql": "CREATE TABLE \"public\".\"Pagamento\" (\n  \"criadoEm\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"mensagem\" text,\n  \"metodo\" text,\n  \"pedidoId\" text NOT NULL,\n  \"status\" text DEFAULT 'PENDENTE' NOT NULL,\n  \"transacaoId\" text,\n  \"valor\" numeric NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Pagamento_status_check_005793e5\" CHECK (\"status\" IN ('PENDENTE', 'APROVADO', 'NEGADO'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Pagamento\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pagamento\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.HistoricoStatusPedido.HistoricoStatusPedido_pedidoId_idx_4742647d",
+    "label": "Create index \"HistoricoStatusPedido_pedidoId_idx_4742647d\" on \"HistoricoStatusPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "HistoricoStatusPedido_pedidoId_idx_4742647d",
+        "table": "HistoricoStatusPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"HistoricoStatusPedido_pedidoId_idx_4742647d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HistoricoStatusPedido_pedidoId_idx_4742647d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"HistoricoStatusPedido_pedidoId_idx_4742647d\"",
+        "sql": "CREATE INDEX \"HistoricoStatusPedido_pedidoId_idx_4742647d\" ON \"public\".\"HistoricoStatusPedido\" (\"pedidoId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"HistoricoStatusPedido_pedidoId_idx_4742647d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"HistoricoStatusPedido_pedidoId_idx_4742647d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Pagamento.Pagamento_pedidoId_idx_4742647d",
+    "label": "Create index \"Pagamento_pedidoId_idx_4742647d\" on \"Pagamento\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Pagamento_pedidoId_idx_4742647d",
+        "table": "Pagamento"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Pagamento_pedidoId_idx_4742647d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pagamento_pedidoId_idx_4742647d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Pagamento_pedidoId_idx_4742647d\"",
+        "sql": "CREATE INDEX \"Pagamento_pedidoId_idx_4742647d\" ON \"public\".\"Pagamento\" (\"pedidoId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Pagamento_pedidoId_idx_4742647d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Pagamento_pedidoId_idx_4742647d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.HistoricoStatusPedido.HistoricoStatusPedido_pedidoId_fkey",
+    "label": "Add foreign key \"HistoricoStatusPedido_pedidoId_fkey\" on \"HistoricoStatusPedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "HistoricoStatusPedido_pedidoId_fkey",
+        "table": "HistoricoStatusPedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"HistoricoStatusPedido_pedidoId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "HistoricoStatusPedido_pedidoId_fkey",
+          "public",
+          "\"public\".\"HistoricoStatusPedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"HistoricoStatusPedido_pedidoId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"HistoricoStatusPedido\"\nADD CONSTRAINT \"HistoricoStatusPedido_pedidoId_fkey\"\nFOREIGN KEY (\"pedidoId\")\nREFERENCES \"public\".\"Pedido\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"HistoricoStatusPedido_pedidoId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "HistoricoStatusPedido_pedidoId_fkey",
+          "public",
+          "\"public\".\"HistoricoStatusPedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Pagamento.Pagamento_pedidoId_fkey",
+    "label": "Add foreign key \"Pagamento_pedidoId_fkey\" on \"Pagamento\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Pagamento_pedidoId_fkey",
+        "table": "Pagamento"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Pagamento_pedidoId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Pagamento_pedidoId_fkey",
+          "public",
+          "\"public\".\"Pagamento\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Pagamento_pedidoId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Pagamento\"\nADD CONSTRAINT \"Pagamento_pedidoId_fkey\"\nFOREIGN KEY (\"pedidoId\")\nREFERENCES \"public\".\"Pedido\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Pagamento_pedidoId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Pagamento_pedidoId_fkey",
+          "public",
+          "\"public\".\"Pagamento\""
+        ]
+      }
+    ]
+  }
+]

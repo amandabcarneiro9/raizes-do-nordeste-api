@@ -8,6 +8,34 @@
       "model": "Cliente",
       "namespace": "public"
     },
+    "Estoque": {
+      "model": "Estoque",
+      "namespace": "public"
+    },
+    "HistoricoStatusPedido": {
+      "model": "HistoricoStatusPedido",
+      "namespace": "public"
+    },
+    "ItemPedido": {
+      "model": "ItemPedido",
+      "namespace": "public"
+    },
+    "Pagamento": {
+      "model": "Pagamento",
+      "namespace": "public"
+    },
+    "Pedido": {
+      "model": "Pedido",
+      "namespace": "public"
+    },
+    "Produto": {
+      "model": "Produto",
+      "namespace": "public"
+    },
+    "Unidade": {
+      "model": "Unidade",
+      "namespace": "public"
+    },
     "Usuario": {
       "model": "Usuario",
       "namespace": "public"
@@ -16,6 +44,83 @@
   "domain": {
     "namespaces": {
       "public": {
+        "enum": {
+          "CanalPedido": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "APP",
+                "value": "APP"
+              },
+              {
+                "name": "TOTEM",
+                "value": "TOTEM"
+              },
+              {
+                "name": "BALCAO",
+                "value": "BALCAO"
+              },
+              {
+                "name": "PICKUP",
+                "value": "PICKUP"
+              },
+              {
+                "name": "WEB",
+                "value": "WEB"
+              }
+            ]
+          },
+          "StatusPagamento": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "PENDENTE",
+                "value": "PENDENTE"
+              },
+              {
+                "name": "APROVADO",
+                "value": "APROVADO"
+              },
+              {
+                "name": "NEGADO",
+                "value": "NEGADO"
+              }
+            ]
+          },
+          "StatusPedido": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "CRIADO",
+                "value": "CRIADO"
+              },
+              {
+                "name": "AGUARDANDO_PAGAMENTO",
+                "value": "AGUARDANDO_PAGAMENTO"
+              },
+              {
+                "name": "PAGO",
+                "value": "PAGO"
+              },
+              {
+                "name": "EM_PREPARACAO",
+                "value": "EM_PREPARACAO"
+              },
+              {
+                "name": "PRONTO",
+                "value": "PRONTO"
+              },
+              {
+                "name": "ENTREGUE",
+                "value": "ENTREGUE"
+              },
+              {
+                "name": "CANCELADO",
+                "value": "CANCELADO"
+              }
+            ]
+          }
+        },
         "models": {
           "Cliente": {
             "fields": {
@@ -56,6 +161,21 @@
               }
             },
             "relations": {
+              "pedidos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "clienteId"
+                  ]
+                },
+                "to": {
+                  "model": "Pedido",
+                  "namespace": "public"
+                }
+              },
               "usuario": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -93,6 +213,757 @@
               },
               "namespaceId": "public",
               "table": "Cliente"
+            }
+          },
+          "Estoque": {
+            "fields": {
+              "atualizadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "produtoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "quantidade": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "unidadeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "produto": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "produtoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Produto",
+                  "namespace": "public"
+                }
+              },
+              "unidade": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "unidadeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Unidade",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "atualizadoEm": {
+                  "column": "atualizadoEm"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "produtoId": {
+                  "column": "produtoId"
+                },
+                "quantidade": {
+                  "column": "quantidade"
+                },
+                "unidadeId": {
+                  "column": "unidadeId"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Estoque"
+            }
+          },
+          "HistoricoStatusPedido": {
+            "fields": {
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "observacao": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "pedidoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "StatusPedido",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              }
+            },
+            "relations": {
+              "pedido": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "pedidoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Pedido",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "criadoEm": {
+                  "column": "criadoEm"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "observacao": {
+                  "column": "observacao"
+                },
+                "pedidoId": {
+                  "column": "pedidoId"
+                },
+                "status": {
+                  "column": "status"
+                }
+              },
+              "namespaceId": "public",
+              "table": "HistoricoStatusPedido"
+            }
+          },
+          "ItemPedido": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "pedidoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "precoUnitario": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "produtoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "quantidade": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "subtotal": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "pedido": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "pedidoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Pedido",
+                  "namespace": "public"
+                }
+              },
+              "produto": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "produtoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Produto",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "pedidoId": {
+                  "column": "pedidoId"
+                },
+                "precoUnitario": {
+                  "column": "precoUnitario"
+                },
+                "produtoId": {
+                  "column": "produtoId"
+                },
+                "quantidade": {
+                  "column": "quantidade"
+                },
+                "subtotal": {
+                  "column": "subtotal"
+                }
+              },
+              "namespaceId": "public",
+              "table": "ItemPedido"
+            }
+          },
+          "Pagamento": {
+            "fields": {
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "mensagem": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "metodo": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "pedidoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "StatusPagamento",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "transacaoId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "valor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "pedido": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "pedidoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Pedido",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "criadoEm": {
+                  "column": "criadoEm"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "mensagem": {
+                  "column": "mensagem"
+                },
+                "metodo": {
+                  "column": "metodo"
+                },
+                "pedidoId": {
+                  "column": "pedidoId"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "transacaoId": {
+                  "column": "transacaoId"
+                },
+                "valor": {
+                  "column": "valor"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Pagamento"
+            }
+          },
+          "Pedido": {
+            "fields": {
+              "atualizadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "canalPedido": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "CanalPedido",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "clienteId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "StatusPedido",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "unidadeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "valorTotal": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "cliente": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "clienteId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Cliente",
+                  "namespace": "public"
+                }
+              },
+              "historico": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "pedidoId"
+                  ]
+                },
+                "to": {
+                  "model": "HistoricoStatusPedido",
+                  "namespace": "public"
+                }
+              },
+              "itens": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "pedidoId"
+                  ]
+                },
+                "to": {
+                  "model": "ItemPedido",
+                  "namespace": "public"
+                }
+              },
+              "pagamentos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "pedidoId"
+                  ]
+                },
+                "to": {
+                  "model": "Pagamento",
+                  "namespace": "public"
+                }
+              },
+              "unidade": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "unidadeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Unidade",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "atualizadoEm": {
+                  "column": "atualizadoEm"
+                },
+                "canalPedido": {
+                  "column": "canalPedido"
+                },
+                "clienteId": {
+                  "column": "clienteId"
+                },
+                "criadoEm": {
+                  "column": "criadoEm"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "unidadeId": {
+                  "column": "unidadeId"
+                },
+                "valorTotal": {
+                  "column": "valorTotal"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Pedido"
+            }
+          },
+          "Produto": {
+            "fields": {
+              "ativo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "descricao": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "preco": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "estoques": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "produtoId"
+                  ]
+                },
+                "to": {
+                  "model": "Estoque",
+                  "namespace": "public"
+                }
+              },
+              "itensPedido": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "produtoId"
+                  ]
+                },
+                "to": {
+                  "model": "ItemPedido",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "ativo": {
+                  "column": "ativo"
+                },
+                "descricao": {
+                  "column": "descricao"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nome": {
+                  "column": "nome"
+                },
+                "preco": {
+                  "column": "preco"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Produto"
+            }
+          },
+          "Unidade": {
+            "fields": {
+              "ativo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "endereco": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "estoques": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "unidadeId"
+                  ]
+                },
+                "to": {
+                  "model": "Estoque",
+                  "namespace": "public"
+                }
+              },
+              "pedidos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "unidadeId"
+                  ]
+                },
+                "to": {
+                  "model": "Pedido",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "ativo": {
+                  "column": "ativo"
+                },
+                "endereco": {
+                  "column": "endereco"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nome": {
+                  "column": "nome"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Unidade"
             }
           },
           "Usuario": {
@@ -270,6 +1141,590 @@
                 }
               ]
             },
+            "Estoque": {
+              "columns": {
+                "atualizadoEm": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "produtoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "quantidade": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "unidadeId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "unidadeId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Estoque"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Unidade"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "produtoId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Estoque"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Produto"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "produtoId"
+                  ],
+                  "name": "Estoque_produtoId_idx_eb62fdb9",
+                  "prefix": "Estoque_produtoId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "unidadeId"
+                  ],
+                  "name": "Estoque_unidadeId_idx_af675c1c",
+                  "prefix": "Estoque_unidadeId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "unidadeId",
+                    "produtoId"
+                  ]
+                }
+              ]
+            },
+            "HistoricoStatusPedido": {
+              "checks": [
+                {
+                  "expression": "\"status\" IN ('CRIADO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'EM_PREPARACAO', 'PRONTO', 'ENTREGUE', 'CANCELADO')",
+                  "name": "HistoricoStatusPedido_status_check_e61dac9d",
+                  "prefix": "HistoricoStatusPedido_status_check"
+                }
+              ],
+              "columns": {
+                "criadoEm": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "observacao": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "pedidoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "StatusPedido",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "pedidoId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "HistoricoStatusPedido"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Pedido"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "pedidoId"
+                  ],
+                  "name": "HistoricoStatusPedido_pedidoId_idx_4742647d",
+                  "prefix": "HistoricoStatusPedido_pedidoId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "ItemPedido": {
+              "columns": {
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "pedidoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "precoUnitario": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "produtoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "quantidade": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "subtotal": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "pedidoId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ItemPedido"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Pedido"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "produtoId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ItemPedido"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Produto"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "pedidoId"
+                  ],
+                  "name": "ItemPedido_pedidoId_idx_4742647d",
+                  "prefix": "ItemPedido_pedidoId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "produtoId"
+                  ],
+                  "name": "ItemPedido_produtoId_idx_eb62fdb9",
+                  "prefix": "ItemPedido_produtoId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Pagamento": {
+              "checks": [
+                {
+                  "expression": "\"status\" IN ('PENDENTE', 'APROVADO', 'NEGADO')",
+                  "name": "Pagamento_status_check_005793e5",
+                  "prefix": "Pagamento_status_check"
+                }
+              ],
+              "columns": {
+                "criadoEm": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "mensagem": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "metodo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "pedidoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "PENDENTE"
+                  },
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "StatusPagamento",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "transacaoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "valor": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "pedidoId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Pagamento"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Pedido"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "pedidoId"
+                  ],
+                  "name": "Pagamento_pedidoId_idx_4742647d",
+                  "prefix": "Pagamento_pedidoId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Pedido": {
+              "checks": [
+                {
+                  "expression": "\"canalPedido\" IN ('APP', 'TOTEM', 'BALCAO', 'PICKUP', 'WEB')",
+                  "name": "Pedido_canalPedido_check_96be225e",
+                  "prefix": "Pedido_canalPedido_check"
+                },
+                {
+                  "expression": "\"status\" IN ('CRIADO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'EM_PREPARACAO', 'PRONTO', 'ENTREGUE', 'CANCELADO')",
+                  "name": "Pedido_status_check_e61dac9d",
+                  "prefix": "Pedido_status_check"
+                }
+              ],
+              "columns": {
+                "atualizadoEm": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "canalPedido": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "CanalPedido",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "clienteId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "criadoEm": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "CRIADO"
+                  },
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "StatusPedido",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "unidadeId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "valorTotal": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "clienteId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Pedido"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Cliente"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "unidadeId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Pedido"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Unidade"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "clienteId"
+                  ],
+                  "name": "Pedido_clienteId_idx_7ae16308",
+                  "prefix": "Pedido_clienteId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "unidadeId"
+                  ],
+                  "name": "Pedido_unidadeId_idx_af675c1c",
+                  "prefix": "Pedido_unidadeId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Produto": {
+              "columns": {
+                "ativo": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "descricao": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "nome": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "preco": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Unidade": {
+              "columns": {
+                "ativo": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "endereco": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "nome": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
             "Usuario": {
               "columns": {
                 "ativo": {
@@ -331,16 +1786,48 @@
                 }
               ]
             }
+          },
+          "valueSet": {
+            "CanalPedido": {
+              "kind": "valueSet",
+              "values": [
+                "APP",
+                "TOTEM",
+                "BALCAO",
+                "PICKUP",
+                "WEB"
+              ]
+            },
+            "StatusPagamento": {
+              "kind": "valueSet",
+              "values": [
+                "PENDENTE",
+                "APROVADO",
+                "NEGADO"
+              ]
+            },
+            "StatusPedido": {
+              "kind": "valueSet",
+              "values": [
+                "CRIADO",
+                "AGUARDANDO_PAGAMENTO",
+                "PAGO",
+                "EM_PREPARACAO",
+                "PRONTO",
+                "ENTREGUE",
+                "CANCELADO"
+              ]
+            }
           }
         },
         "id": "public",
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "c7c9050d625a740195efe453a8529f629a40c841fa871b188fcbf693325e4cbb"
+    "storageHash": "1ab9cfe52a1b68fa58ffc1418c732782e9482504299977753047f75f864f60bd"
   },
   "execution": {
-    "executionHash": "533cf6557dec3bbe602fdb88920059d90b9554dab6c8a739149e3c204265fc16",
+    "executionHash": "4a6a2df3b7abefa51bf384a70b8d486491ec0422773964056712fff2ac2f5a8f",
     "mutations": {
       "defaults": [
         {
@@ -350,6 +1837,98 @@
           },
           "ref": {
             "entry": "Cliente",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Estoque",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "HistoricoStatusPedido",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "ItemPedido",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Pagamento",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Pedido",
+            "field": "atualizadoEm",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Pedido",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Produto",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Unidade",
             "field": "id",
             "namespace": "public"
           }

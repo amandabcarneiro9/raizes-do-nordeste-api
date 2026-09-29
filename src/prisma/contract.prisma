@@ -19,5 +19,117 @@ model Cliente {
   pontos    Int      @default(0)
   criadoEm  TimestamptzString @default(now())
 
-  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  pedidos   Pedido[]
+}
+
+model Unidade {
+  id       String  @id @default(uuid())
+  nome     String
+  endereco String?
+  ativo    Boolean @default(true)
+
+  estoques Estoque[]
+  pedidos  Pedido[]
+}
+
+model Produto {
+  id        String  @id @default(uuid())
+  nome      String
+  descricao String?
+  preco     Decimal
+  ativo     Boolean @default(true)
+
+  estoques    Estoque[]
+  itensPedido ItemPedido[]
+}
+
+model Estoque {
+  id           String @id @default(uuid())
+  unidadeId    String
+  produtoId    String
+  quantidade   Int    @default(0)
+  atualizadoEm TimestamptzString @default(now())
+
+  unidade Unidade @relation(fields: [unidadeId], references: [id])
+  produto Produto @relation(fields: [produtoId], references: [id])
+
+  @@unique([unidadeId, produtoId])
+}
+
+enum CanalPedido {
+  APP
+  TOTEM
+  BALCAO
+  PICKUP
+  WEB
+}
+
+enum StatusPedido {
+  CRIADO
+  AGUARDANDO_PAGAMENTO
+  PAGO
+  EM_PREPARACAO
+  PRONTO
+  ENTREGUE
+  CANCELADO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  APROVADO
+  NEGADO
+}
+
+model Pedido {
+  id           String       @id @default(uuid())
+  clienteId    String?
+  unidadeId    String
+  canalPedido  CanalPedido
+  status       StatusPedido @default(CRIADO)
+  valorTotal   Decimal
+  criadoEm     TimestamptzString @default(now())
+  atualizadoEm temporal.updatedAtString()
+
+  cliente Cliente? @relation(fields: [clienteId], references: [id])
+  unidade Unidade  @relation(fields: [unidadeId], references: [id])
+
+  itens      ItemPedido[]
+  pagamentos Pagamento[]
+  historico  HistoricoStatusPedido[]
+}
+
+model ItemPedido {
+  id            String  @id @default(uuid())
+  pedidoId      String
+  produtoId     String
+  quantidade    Int
+  precoUnitario Decimal
+  subtotal      Decimal
+
+  pedido  Pedido  @relation(fields: [pedidoId], references: [id])
+  produto Produto @relation(fields: [produtoId], references: [id])
+}
+
+model Pagamento {
+  id          String          @id @default(uuid())
+  pedidoId    String
+  metodo      String?
+  status      StatusPagamento @default(PENDENTE)
+  valor       Decimal
+  transacaoId String?
+  mensagem    String?
+  criadoEm    TimestamptzString @default(now())
+
+  pedido Pedido @relation(fields: [pedidoId], references: [id])
+}
+
+model HistoricoStatusPedido {
+  id         String       @id @default(uuid())
+  pedidoId   String
+  status     StatusPedido
+  observacao String?
+  criadoEm   TimestamptzString @default(now())
+
+  pedido Pedido @relation(fields: [pedidoId], references: [id])
 }

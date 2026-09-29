@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1ab9cfe52a1b68fa58ffc1418c732782e9482504299977753047f75f864f60bd'>;
+  StorageHashBase<'793893357afd66614b7a818c7959d9a386d1906f50da13f312913641cb8f15c9'>;
 export type ExecutionHash =
-  ExecutionHashBase<'4a6a2df3b7abefa51bf384a70b8d486491ec0422773964056712fff2ac2f5a8f'>;
+  ExecutionHashBase<'87b92a548e3742508c3671dbadda458c4454304f3a967da8391e4f930cf974f5'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -264,55 +264,6 @@ export type FieldOutputTypes = {
       readonly quantidade: CodecTypes['pg/int4@1']['output'];
       readonly unidadeId: CodecTypes['pg/text@1']['output'];
     };
-    readonly HistoricoStatusPedido: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly observacao: CodecTypes['pg/text@1']['output'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['output'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-    };
-    readonly ItemPedido: {
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly pedidoId: CodecTypes['pg/text@1']['output'];
-      readonly precoUnitario: CodecTypes['pg/numeric@1']['output'];
-      readonly produtoId: CodecTypes['pg/text@1']['output'];
-      readonly quantidade: CodecTypes['pg/int4@1']['output'];
-      readonly subtotal: CodecTypes['pg/numeric@1']['output'];
-    };
-    readonly Pagamento: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly mensagem: CodecTypes['pg/text@1']['output'] | null;
-      readonly metodo: CodecTypes['pg/text@1']['output'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['output'];
-      readonly status: 'PENDENTE' | 'APROVADO' | 'NEGADO';
-      readonly transacaoId: CodecTypes['pg/text@1']['output'] | null;
-      readonly valor: CodecTypes['pg/numeric@1']['output'];
-    };
-    readonly Pedido: {
-      readonly atualizadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB';
-      readonly clienteId: CodecTypes['pg/text@1']['output'] | null;
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-      readonly unidadeId: CodecTypes['pg/text@1']['output'];
-      readonly valorTotal: CodecTypes['pg/numeric@1']['output'];
-    };
     readonly Produto: {
       readonly ativo: CodecTypes['pg/bool@1']['output'];
       readonly descricao: CodecTypes['pg/text@1']['output'] | null;
@@ -352,55 +303,6 @@ export type FieldInputTypes = {
       readonly produtoId: CodecTypes['pg/text@1']['input'];
       readonly quantidade: CodecTypes['pg/int4@1']['input'];
       readonly unidadeId: CodecTypes['pg/text@1']['input'];
-    };
-    readonly HistoricoStatusPedido: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly observacao: CodecTypes['pg/text@1']['input'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['input'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-    };
-    readonly ItemPedido: {
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly pedidoId: CodecTypes['pg/text@1']['input'];
-      readonly precoUnitario: CodecTypes['pg/numeric@1']['input'];
-      readonly produtoId: CodecTypes['pg/text@1']['input'];
-      readonly quantidade: CodecTypes['pg/int4@1']['input'];
-      readonly subtotal: CodecTypes['pg/numeric@1']['input'];
-    };
-    readonly Pagamento: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly mensagem: CodecTypes['pg/text@1']['input'] | null;
-      readonly metodo: CodecTypes['pg/text@1']['input'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['input'];
-      readonly status: 'PENDENTE' | 'APROVADO' | 'NEGADO';
-      readonly transacaoId: CodecTypes['pg/text@1']['input'] | null;
-      readonly valor: CodecTypes['pg/numeric@1']['input'];
-    };
-    readonly Pedido: {
-      readonly atualizadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB';
-      readonly clienteId: CodecTypes['pg/text@1']['input'] | null;
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-      readonly unidadeId: CodecTypes['pg/text@1']['input'];
-      readonly valorTotal: CodecTypes['pg/numeric@1']['input'];
     };
     readonly Produto: {
       readonly ativo: CodecTypes['pg/bool@1']['input'];
@@ -442,55 +344,6 @@ export type StorageColumnTypes = {
       readonly quantidade: CodecTypes['pg/int4@1']['output'];
       readonly unidadeId: CodecTypes['pg/text@1']['output'];
     };
-    readonly HistoricoStatusPedido: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly observacao: CodecTypes['pg/text@1']['output'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['output'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-    };
-    readonly ItemPedido: {
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly pedidoId: CodecTypes['pg/text@1']['output'];
-      readonly precoUnitario: CodecTypes['pg/numeric@1']['output'];
-      readonly produtoId: CodecTypes['pg/text@1']['output'];
-      readonly quantidade: CodecTypes['pg/int4@1']['output'];
-      readonly subtotal: CodecTypes['pg/numeric@1']['output'];
-    };
-    readonly Pagamento: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly mensagem: CodecTypes['pg/text@1']['output'] | null;
-      readonly metodo: CodecTypes['pg/text@1']['output'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['output'];
-      readonly status: 'PENDENTE' | 'APROVADO' | 'NEGADO';
-      readonly transacaoId: CodecTypes['pg/text@1']['output'] | null;
-      readonly valor: CodecTypes['pg/numeric@1']['output'];
-    };
-    readonly Pedido: {
-      readonly atualizadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB';
-      readonly clienteId: CodecTypes['pg/text@1']['output'] | null;
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-      readonly unidadeId: CodecTypes['pg/text@1']['output'];
-      readonly valorTotal: CodecTypes['pg/numeric@1']['output'];
-    };
     readonly Produto: {
       readonly ativo: CodecTypes['pg/bool@1']['output'];
       readonly descricao: CodecTypes['pg/text@1']['output'] | null;
@@ -531,55 +384,6 @@ export type StorageColumnInputTypes = {
       readonly quantidade: CodecTypes['pg/int4@1']['input'];
       readonly unidadeId: CodecTypes['pg/text@1']['input'];
     };
-    readonly HistoricoStatusPedido: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly observacao: CodecTypes['pg/text@1']['input'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['input'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-    };
-    readonly ItemPedido: {
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly pedidoId: CodecTypes['pg/text@1']['input'];
-      readonly precoUnitario: CodecTypes['pg/numeric@1']['input'];
-      readonly produtoId: CodecTypes['pg/text@1']['input'];
-      readonly quantidade: CodecTypes['pg/int4@1']['input'];
-      readonly subtotal: CodecTypes['pg/numeric@1']['input'];
-    };
-    readonly Pagamento: {
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly mensagem: CodecTypes['pg/text@1']['input'] | null;
-      readonly metodo: CodecTypes['pg/text@1']['input'] | null;
-      readonly pedidoId: CodecTypes['pg/text@1']['input'];
-      readonly status: 'PENDENTE' | 'APROVADO' | 'NEGADO';
-      readonly transacaoId: CodecTypes['pg/text@1']['input'] | null;
-      readonly valor: CodecTypes['pg/numeric@1']['input'];
-    };
-    readonly Pedido: {
-      readonly atualizadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB';
-      readonly clienteId: CodecTypes['pg/text@1']['input'] | null;
-      readonly criadoEm: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly status:
-        | 'CRIADO'
-        | 'AGUARDANDO_PAGAMENTO'
-        | 'PAGO'
-        | 'EM_PREPARACAO'
-        | 'PRONTO'
-        | 'ENTREGUE'
-        | 'CANCELADO';
-      readonly unidadeId: CodecTypes['pg/text@1']['input'];
-      readonly valorTotal: CodecTypes['pg/numeric@1']['input'];
-    };
     readonly Produto: {
       readonly ativo: CodecTypes['pg/bool@1']['input'];
       readonly descricao: CodecTypes['pg/text@1']['input'] | null;
@@ -612,9 +416,8 @@ export namespace Models {
     pontos: CodecTypes['pg/int4@1']['output'];
     telefone: CodecTypes['pg/text@1']['output'] | null;
     usuarioId: CodecTypes['pg/text@1']['output'];
-    pedidos: public_Pedido[];
     usuario: public_Usuario;
-    readonly [RelationKeys]?: 'pedidos' | 'usuario';
+    readonly [RelationKeys]?: 'usuario';
   };
   export type public_Estoque = {
     atualizadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -626,68 +429,6 @@ export namespace Models {
     unidade: public_Unidade;
     readonly [RelationKeys]?: 'produto' | 'unidade';
   };
-  export type public_HistoricoStatusPedido = {
-    criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-    id: CodecTypes['pg/text@1']['output'];
-    observacao: CodecTypes['pg/text@1']['output'] | null;
-    pedidoId: CodecTypes['pg/text@1']['output'];
-    status:
-      | 'CRIADO'
-      | 'AGUARDANDO_PAGAMENTO'
-      | 'PAGO'
-      | 'EM_PREPARACAO'
-      | 'PRONTO'
-      | 'ENTREGUE'
-      | 'CANCELADO';
-    pedido: public_Pedido;
-    readonly [RelationKeys]?: 'pedido';
-  };
-  export type public_ItemPedido = {
-    id: CodecTypes['pg/text@1']['output'];
-    pedidoId: CodecTypes['pg/text@1']['output'];
-    precoUnitario: CodecTypes['pg/numeric@1']['output'];
-    produtoId: CodecTypes['pg/text@1']['output'];
-    quantidade: CodecTypes['pg/int4@1']['output'];
-    subtotal: CodecTypes['pg/numeric@1']['output'];
-    pedido: public_Pedido;
-    produto: public_Produto;
-    readonly [RelationKeys]?: 'pedido' | 'produto';
-  };
-  export type public_Pagamento = {
-    criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-    id: CodecTypes['pg/text@1']['output'];
-    mensagem: CodecTypes['pg/text@1']['output'] | null;
-    metodo: CodecTypes['pg/text@1']['output'] | null;
-    pedidoId: CodecTypes['pg/text@1']['output'];
-    status: 'PENDENTE' | 'APROVADO' | 'NEGADO';
-    transacaoId: CodecTypes['pg/text@1']['output'] | null;
-    valor: CodecTypes['pg/numeric@1']['output'];
-    pedido: public_Pedido;
-    readonly [RelationKeys]?: 'pedido';
-  };
-  export type public_Pedido = {
-    atualizadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-    canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB';
-    clienteId: CodecTypes['pg/text@1']['output'] | null;
-    criadoEm: CodecTypes['pg/timestamptz-string@1']['output'];
-    id: CodecTypes['pg/text@1']['output'];
-    status:
-      | 'CRIADO'
-      | 'AGUARDANDO_PAGAMENTO'
-      | 'PAGO'
-      | 'EM_PREPARACAO'
-      | 'PRONTO'
-      | 'ENTREGUE'
-      | 'CANCELADO';
-    unidadeId: CodecTypes['pg/text@1']['output'];
-    valorTotal: CodecTypes['pg/numeric@1']['output'];
-    cliente: public_Cliente | null;
-    historico: public_HistoricoStatusPedido[];
-    itens: public_ItemPedido[];
-    pagamentos: public_Pagamento[];
-    unidade: public_Unidade;
-    readonly [RelationKeys]?: 'cliente' | 'historico' | 'itens' | 'pagamentos' | 'unidade';
-  };
   export type public_Produto = {
     ativo: CodecTypes['pg/bool@1']['output'];
     descricao: CodecTypes['pg/text@1']['output'] | null;
@@ -695,8 +436,7 @@ export namespace Models {
     nome: CodecTypes['pg/text@1']['output'];
     preco: CodecTypes['pg/numeric@1']['output'];
     estoques: public_Estoque[];
-    itensPedido: public_ItemPedido[];
-    readonly [RelationKeys]?: 'estoques' | 'itensPedido';
+    readonly [RelationKeys]?: 'estoques';
   };
   export type public_Unidade = {
     ativo: CodecTypes['pg/bool@1']['output'];
@@ -704,8 +444,7 @@ export namespace Models {
     id: CodecTypes['pg/text@1']['output'];
     nome: CodecTypes['pg/text@1']['output'];
     estoques: public_Estoque[];
-    pedidos: public_Pedido[];
-    readonly [RelationKeys]?: 'estoques' | 'pedidos';
+    readonly [RelationKeys]?: 'estoques';
   };
   export type public_Usuario = {
     ativo: CodecTypes['pg/bool@1']['output'];
@@ -724,10 +463,6 @@ export declare const models: {
   public: {
     Cliente: Models.public_Cliente;
     Estoque: Models.public_Estoque;
-    HistoricoStatusPedido: Models.public_HistoricoStatusPedido;
-    ItemPedido: Models.public_ItemPedido;
-    Pagamento: Models.public_Pagamento;
-    Pedido: Models.public_Pedido;
     Produto: Models.public_Produto;
     Unidade: Models.public_Unidade;
     Usuario: Models.public_Usuario;
@@ -879,300 +614,6 @@ type ContractBase = Omit<
                 },
               ];
             };
-            readonly HistoricoStatusPedido: {
-              columns: {
-                readonly criadoEm: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly id: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly observacao: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly pedidoId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly status: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'HistoricoStatusPedido_pedidoId_idx_4742647d';
-                  readonly prefix: 'HistoricoStatusPedido_pedidoId_idx';
-                  readonly columns: readonly ['pedidoId'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'HistoricoStatusPedido';
-                    readonly columns: readonly ['pedidoId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Pedido';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
-            readonly ItemPedido: {
-              columns: {
-                readonly id: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly pedidoId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly precoUnitario: {
-                  readonly nativeType: 'numeric';
-                  readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
-                };
-                readonly produtoId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly quantidade: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                };
-                readonly subtotal: {
-                  readonly nativeType: 'numeric';
-                  readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'ItemPedido_pedidoId_idx_4742647d';
-                  readonly prefix: 'ItemPedido_pedidoId_idx';
-                  readonly columns: readonly ['pedidoId'];
-                  readonly unique: false;
-                },
-                {
-                  readonly name: 'ItemPedido_produtoId_idx_eb62fdb9';
-                  readonly prefix: 'ItemPedido_produtoId_idx';
-                  readonly columns: readonly ['produtoId'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'ItemPedido';
-                    readonly columns: readonly ['pedidoId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Pedido';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'ItemPedido';
-                    readonly columns: readonly ['produtoId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Produto';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
-            readonly Pagamento: {
-              columns: {
-                readonly criadoEm: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly id: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly mensagem: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly metodo: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly pedidoId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly status: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'PENDENTE'>;
-                  };
-                };
-                readonly transacaoId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly valor: {
-                  readonly nativeType: 'numeric';
-                  readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'Pagamento_pedidoId_idx_4742647d';
-                  readonly prefix: 'Pagamento_pedidoId_idx';
-                  readonly columns: readonly ['pedidoId'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Pagamento';
-                    readonly columns: readonly ['pedidoId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Pedido';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
-            readonly Pedido: {
-              columns: {
-                readonly atualizadoEm: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                };
-                readonly canalPedido: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly clienteId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly criadoEm: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly id: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly status: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'CRIADO'>;
-                  };
-                };
-                readonly unidadeId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly valorTotal: {
-                  readonly nativeType: 'numeric';
-                  readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'Pedido_clienteId_idx_7ae16308';
-                  readonly prefix: 'Pedido_clienteId_idx';
-                  readonly columns: readonly ['clienteId'];
-                  readonly unique: false;
-                },
-                {
-                  readonly name: 'Pedido_unidadeId_idx_af675c1c';
-                  readonly prefix: 'Pedido_unidadeId_idx';
-                  readonly columns: readonly ['unidadeId'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Pedido';
-                    readonly columns: readonly ['clienteId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Cliente';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Pedido';
-                    readonly columns: readonly ['unidadeId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Unidade';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
             readonly Produto: {
               columns: {
                 readonly ativo: {
@@ -1291,28 +732,6 @@ type ContractBase = Omit<
               foreignKeys: readonly [];
             };
           };
-          readonly valueSet: {
-            readonly CanalPedido: {
-              readonly kind: 'valueSet';
-              readonly values: readonly ['APP', 'TOTEM', 'BALCAO', 'PICKUP', 'WEB'];
-            };
-            readonly StatusPagamento: {
-              readonly kind: 'valueSet';
-              readonly values: readonly ['PENDENTE', 'APROVADO', 'NEGADO'];
-            };
-            readonly StatusPedido: {
-              readonly kind: 'valueSet';
-              readonly values: readonly [
-                'CRIADO',
-                'AGUARDANDO_PAGAMENTO',
-                'PAGO',
-                'EM_PREPARACAO',
-                'PRONTO',
-                'ENTREGUE',
-                'CANCELADO',
-              ];
-            };
-          };
         };
       };
     };
@@ -1325,16 +744,6 @@ type ContractBase = Omit<
   readonly roots: {
     readonly Cliente: { readonly namespace: 'public' & NamespaceId; readonly model: 'Cliente' };
     readonly Estoque: { readonly namespace: 'public' & NamespaceId; readonly model: 'Estoque' };
-    readonly HistoricoStatusPedido: {
-      readonly namespace: 'public' & NamespaceId;
-      readonly model: 'HistoricoStatusPedido';
-    };
-    readonly ItemPedido: {
-      readonly namespace: 'public' & NamespaceId;
-      readonly model: 'ItemPedido';
-    };
-    readonly Pagamento: { readonly namespace: 'public' & NamespaceId; readonly model: 'Pagamento' };
-    readonly Pedido: { readonly namespace: 'public' & NamespaceId; readonly model: 'Pedido' };
     readonly Produto: { readonly namespace: 'public' & NamespaceId; readonly model: 'Produto' };
     readonly Unidade: { readonly namespace: 'public' & NamespaceId; readonly model: 'Unidade' };
     readonly Usuario: { readonly namespace: 'public' & NamespaceId; readonly model: 'Usuario' };
@@ -1370,17 +779,6 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
-              readonly pedidos: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Pedido';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['clienteId'];
-                };
-              };
               readonly usuario: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -1470,306 +868,6 @@ type ContractBase = Omit<
               };
             };
           };
-          readonly HistoricoStatusPedido: {
-            readonly fields: {
-              readonly criadoEm: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly observacao: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly pedidoId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly status: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-            };
-            readonly relations: {
-              readonly pedido: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Pedido';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['pedidoId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'HistoricoStatusPedido';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly criadoEm: { readonly column: 'criadoEm' };
-                readonly id: { readonly column: 'id' };
-                readonly observacao: { readonly column: 'observacao' };
-                readonly pedidoId: { readonly column: 'pedidoId' };
-                readonly status: { readonly column: 'status' };
-              };
-            };
-          };
-          readonly ItemPedido: {
-            readonly fields: {
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly pedidoId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly precoUnitario: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
-              };
-              readonly produtoId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly quantidade: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly subtotal: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
-              };
-            };
-            readonly relations: {
-              readonly pedido: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Pedido';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['pedidoId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-              readonly produto: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Produto';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['produtoId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'ItemPedido';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly id: { readonly column: 'id' };
-                readonly pedidoId: { readonly column: 'pedidoId' };
-                readonly precoUnitario: { readonly column: 'precoUnitario' };
-                readonly produtoId: { readonly column: 'produtoId' };
-                readonly quantidade: { readonly column: 'quantidade' };
-                readonly subtotal: { readonly column: 'subtotal' };
-              };
-            };
-          };
-          readonly Pagamento: {
-            readonly fields: {
-              readonly criadoEm: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly mensagem: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly metodo: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly pedidoId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly status: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly transacaoId: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly valor: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
-              };
-            };
-            readonly relations: {
-              readonly pedido: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Pedido';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['pedidoId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'Pagamento';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly criadoEm: { readonly column: 'criadoEm' };
-                readonly id: { readonly column: 'id' };
-                readonly mensagem: { readonly column: 'mensagem' };
-                readonly metodo: { readonly column: 'metodo' };
-                readonly pedidoId: { readonly column: 'pedidoId' };
-                readonly status: { readonly column: 'status' };
-                readonly transacaoId: { readonly column: 'transacaoId' };
-                readonly valor: { readonly column: 'valor' };
-              };
-            };
-          };
-          readonly Pedido: {
-            readonly fields: {
-              readonly atualizadoEm: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly canalPedido: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly clienteId: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly criadoEm: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly status: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly unidadeId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly valorTotal: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
-              };
-            };
-            readonly relations: {
-              readonly cliente: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Cliente';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: true;
-                readonly on: {
-                  readonly localFields: readonly ['clienteId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-              readonly historico: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'HistoricoStatusPedido';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['pedidoId'];
-                };
-              };
-              readonly itens: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'ItemPedido';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['pedidoId'];
-                };
-              };
-              readonly pagamentos: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Pagamento';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['pedidoId'];
-                };
-              };
-              readonly unidade: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Unidade';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['unidadeId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'Pedido';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly atualizadoEm: { readonly column: 'atualizadoEm' };
-                readonly canalPedido: { readonly column: 'canalPedido' };
-                readonly clienteId: { readonly column: 'clienteId' };
-                readonly criadoEm: { readonly column: 'criadoEm' };
-                readonly id: { readonly column: 'id' };
-                readonly status: { readonly column: 'status' };
-                readonly unidadeId: { readonly column: 'unidadeId' };
-                readonly valorTotal: { readonly column: 'valorTotal' };
-              };
-            };
-          };
           readonly Produto: {
             readonly fields: {
               readonly ativo: {
@@ -1798,17 +896,6 @@ type ContractBase = Omit<
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Estoque';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['produtoId'];
-                };
-              };
-              readonly itensPedido: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'ItemPedido';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -1853,17 +940,6 @@ type ContractBase = Omit<
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Estoque';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['unidadeId'];
-                };
-              };
-              readonly pedidos: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Pedido';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -1946,38 +1022,6 @@ type ContractBase = Omit<
             };
           };
         };
-        readonly enum: {
-          readonly CanalPedido: {
-            readonly codecId: 'pg/text@1';
-            readonly members: readonly [
-              { readonly name: 'APP'; readonly value: 'APP' },
-              { readonly name: 'TOTEM'; readonly value: 'TOTEM' },
-              { readonly name: 'BALCAO'; readonly value: 'BALCAO' },
-              { readonly name: 'PICKUP'; readonly value: 'PICKUP' },
-              { readonly name: 'WEB'; readonly value: 'WEB' },
-            ];
-          };
-          readonly StatusPagamento: {
-            readonly codecId: 'pg/text@1';
-            readonly members: readonly [
-              { readonly name: 'PENDENTE'; readonly value: 'PENDENTE' },
-              { readonly name: 'APROVADO'; readonly value: 'APROVADO' },
-              { readonly name: 'NEGADO'; readonly value: 'NEGADO' },
-            ];
-          };
-          readonly StatusPedido: {
-            readonly codecId: 'pg/text@1';
-            readonly members: readonly [
-              { readonly name: 'CRIADO'; readonly value: 'CRIADO' },
-              { readonly name: 'AGUARDANDO_PAGAMENTO'; readonly value: 'AGUARDANDO_PAGAMENTO' },
-              { readonly name: 'PAGO'; readonly value: 'PAGO' },
-              { readonly name: 'EM_PREPARACAO'; readonly value: 'EM_PREPARACAO' },
-              { readonly name: 'PRONTO'; readonly value: 'PRONTO' },
-              { readonly name: 'ENTREGUE'; readonly value: 'ENTREGUE' },
-              { readonly name: 'CANCELADO'; readonly value: 'CANCELADO' },
-            ];
-          };
-        };
       };
     };
   };
@@ -2018,47 +1062,6 @@ type ContractBase = Omit<
           readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
           readonly ref: {
             readonly entry: 'Estoque';
-            readonly field: 'id';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'HistoricoStatusPedido';
-            readonly field: 'id';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'ItemPedido';
-            readonly field: 'id';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'Pagamento';
-            readonly field: 'id';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
-          readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'Pedido';
-            readonly field: 'atualizadoEm';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'Pedido';
             readonly field: 'id';
             readonly namespace: 'public';
           };

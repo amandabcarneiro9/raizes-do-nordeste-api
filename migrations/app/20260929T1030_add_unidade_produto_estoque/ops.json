@@ -1,0 +1,323 @@
+[
+  {
+    "id": "table.Estoque",
+    "label": "Create table \"Estoque\"",
+    "summary": "Creates table \"Estoque\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Estoque"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Estoque\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Estoque\"",
+        "sql": "CREATE TABLE \"public\".\"Estoque\" (\n  \"atualizadoEm\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"produtoId\" text NOT NULL,\n  \"quantidade\" int4 DEFAULT 0 NOT NULL,\n  \"unidadeId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Estoque\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Produto",
+    "label": "Create table \"Produto\"",
+    "summary": "Creates table \"Produto\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Produto"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Produto\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Produto\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Produto\"",
+        "sql": "CREATE TABLE \"public\".\"Produto\" (\n  \"ativo\" bool DEFAULT true NOT NULL,\n  \"descricao\" text,\n  \"id\" text NOT NULL,\n  \"nome\" text NOT NULL,\n  \"preco\" numeric NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Produto\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Produto\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Unidade",
+    "label": "Create table \"Unidade\"",
+    "summary": "Creates table \"Unidade\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Unidade"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Unidade\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Unidade\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Unidade\"",
+        "sql": "CREATE TABLE \"public\".\"Unidade\" (\n  \"ativo\" bool DEFAULT true NOT NULL,\n  \"endereco\" text,\n  \"id\" text NOT NULL,\n  \"nome\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Unidade\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Unidade\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Estoque.Estoque_unidadeId_produtoId_key",
+    "label": "Add unique constraint on \"Estoque\" (unidadeId, produtoId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Estoque_unidadeId_produtoId_key",
+        "table": "Estoque"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Estoque_unidadeId_produtoId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Estoque_unidadeId_produtoId_key",
+          "public",
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Estoque_unidadeId_produtoId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Estoque\" ADD CONSTRAINT \"Estoque_unidadeId_produtoId_key\" UNIQUE (\"unidadeId\", \"produtoId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Estoque_unidadeId_produtoId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Estoque_unidadeId_produtoId_key",
+          "public",
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Estoque.Estoque_produtoId_idx_eb62fdb9",
+    "label": "Create index \"Estoque_produtoId_idx_eb62fdb9\" on \"Estoque\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Estoque_produtoId_idx_eb62fdb9",
+        "table": "Estoque"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Estoque_produtoId_idx_eb62fdb9\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Estoque_produtoId_idx_eb62fdb9\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Estoque_produtoId_idx_eb62fdb9\"",
+        "sql": "CREATE INDEX \"Estoque_produtoId_idx_eb62fdb9\" ON \"public\".\"Estoque\" (\"produtoId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Estoque_produtoId_idx_eb62fdb9\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Estoque_produtoId_idx_eb62fdb9\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Estoque.Estoque_unidadeId_idx_af675c1c",
+    "label": "Create index \"Estoque_unidadeId_idx_af675c1c\" on \"Estoque\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Estoque_unidadeId_idx_af675c1c",
+        "table": "Estoque"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Estoque_unidadeId_idx_af675c1c\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Estoque_unidadeId_idx_af675c1c\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Estoque_unidadeId_idx_af675c1c\"",
+        "sql": "CREATE INDEX \"Estoque_unidadeId_idx_af675c1c\" ON \"public\".\"Estoque\" (\"unidadeId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Estoque_unidadeId_idx_af675c1c\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Estoque_unidadeId_idx_af675c1c\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Estoque.Estoque_unidadeId_fkey",
+    "label": "Add foreign key \"Estoque_unidadeId_fkey\" on \"Estoque\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Estoque_unidadeId_fkey",
+        "table": "Estoque"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Estoque_unidadeId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Estoque_unidadeId_fkey",
+          "public",
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Estoque_unidadeId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Estoque\"\nADD CONSTRAINT \"Estoque_unidadeId_fkey\"\nFOREIGN KEY (\"unidadeId\")\nREFERENCES \"public\".\"Unidade\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Estoque_unidadeId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Estoque_unidadeId_fkey",
+          "public",
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Estoque.Estoque_produtoId_fkey",
+    "label": "Add foreign key \"Estoque_produtoId_fkey\" on \"Estoque\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Estoque_produtoId_fkey",
+        "table": "Estoque"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Estoque_produtoId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Estoque_produtoId_fkey",
+          "public",
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Estoque_produtoId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Estoque\"\nADD CONSTRAINT \"Estoque_produtoId_fkey\"\nFOREIGN KEY (\"produtoId\")\nREFERENCES \"public\".\"Produto\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Estoque_produtoId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Estoque_produtoId_fkey",
+          "public",
+          "\"public\".\"Estoque\""
+        ]
+      }
+    ]
+  }
+]
