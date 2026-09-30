@@ -4,6 +4,7 @@ import { swaggerSpec } from './docs/swagger.js';
 import produtoRouter from './routes/produto.routes.js';
 import unidadeRouter from './routes/unidade.routes.js';
 import estoqueRouter from './routes/estoque.routes.js';
+import pedidoRouter from './routes/pedido.routes.js';
 
 const app = express();
 
@@ -16,6 +17,9 @@ app.use('/produtos', produtoRouter);
 app.use('/unidades', unidadeRouter);
 
 app.use('/estoque', estoqueRouter);
+
+console.log('Registrando /pedidos');
+app.use('/pedidos', pedidoRouter);
 
 app.get('/health', (req, res) => {
 	return res.status(200).json({
