@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs/swagger.js';
 import produtoRouter from './routes/produto.routes.js';
 import unidadeRouter from './routes/unidade.routes.js';
+import estoqueRouter from './routes/estoque.routes.js';
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/produtos', produtoRouter);
 
 app.use('/unidades', unidadeRouter);
+
+app.use('/estoque', estoqueRouter);
 
 app.get('/health', (req, res) => {
 	return res.status(200).json({
