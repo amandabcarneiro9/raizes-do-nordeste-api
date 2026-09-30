@@ -1,12 +1,15 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs/swagger.js';
+import produtoRouter from './routes/produto.routes.js';
 
 const app = express();
 
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use('/produtos', produtoRouter);
 
 app.get('/health', (req, res) => {
 	return res.status(200).json({
