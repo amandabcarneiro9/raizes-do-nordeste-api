@@ -14,3 +14,37 @@ export async function buscarEstoquePedido(unidadeId: string, produtoId: string) 
 		produtoId,
 	}).first();
 }
+
+export async function criarPedido(dados: {
+	unidadeId: string;
+	canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB';
+	valorTotal: number;
+	itens: {
+		produtoId: string;
+		quantidade: number;
+		precoUnitario: number;
+		subtotal: number;
+	}[];
+}) {
+	return db.transaction(async (tx) => {
+		const pedido = await tx.orm.public.Pedido.create({
+			clienteId: null,
+			unidadeId: dados.unidadeId,
+			canalPedido: dados.canalPedido,
+			status: 'CRIADO',
+			valorTotal: dados.valorTotal.toString(),
+		});
+
+		for (const item of dados.itens) {
+			await tx.orm.public.ItemPedido.create({
+				pedidoId: pedido.id,
+				produtoId: item.produtoId,
+				quantidade: item.quantidade,
+				precoUnitario: item.precoUnitario.toString(),
+				subtotal: item.subtotal.toString(),
+			});
+		}
+
+		return pedido;
+	});
+}

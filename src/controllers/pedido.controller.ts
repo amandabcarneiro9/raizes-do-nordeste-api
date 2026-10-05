@@ -3,6 +3,7 @@ import {
 	buscarUnidadePedido,
 	buscarProdutoPedido,
 	buscarEstoquePedido,
+	criarPedido,
 } from '../services/pedido.service.js';
 
 const canaisValidos = ['APP', 'TOTEM', 'BALCAO', 'PICKUP', 'WEB'];
@@ -42,6 +43,16 @@ export async function postPedido(req: Request, res: Response) {
 			});
 		}
 
+		let valorTotal = 0;
+
+		const itensCalculados: {
+			produtoId: string;
+			quantidade: number;
+			precoUnitario: number;
+			subtotal: number;
+		}[] = [];
+
+		// validações antes de alterar o banco
 		for (const item of itens) {
 			if (!item.produtoId || !Number.isInteger(item.quantidade) || item.quantidade <= 0) {
 				return res.status(400).json({
@@ -79,10 +90,30 @@ export async function postPedido(req: Request, res: Response) {
 					detalhes: [`Quantidade disponível: ${estoque.quantidade}`],
 				});
 			}
+
+			const precoUnitario = Number(produto.preco);
+			const subtotal = precoUnitario * item.quantidade;
+
+			valorTotal += subtotal;
+
+			itensCalculados.push({
+				produtoId: item.produtoId,
+				quantidade: item.quantidade,
+				precoUnitario,
+				subtotal,
+			});
 		}
 
-		return res.status(200).json({
-			mensagem: 'Pedido validado com sucesso',
+		const pedido = await criarPedido({
+			unidadeId,
+			canalPedido,
+			valorTotal,
+			itens: itensCalculados,
+		});
+
+		return res.status(201).json({
+			mensagem: 'Pedido criado com sucesso',
+			pedido,
 		});
 	} catch (error) {
 		console.error('Erro ao criar pedido:', error);
