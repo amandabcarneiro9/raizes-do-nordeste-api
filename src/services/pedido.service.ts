@@ -43,6 +43,27 @@ export async function criarPedido(dados: {
 				precoUnitario: item.precoUnitario.toString(),
 				subtotal: item.subtotal.toString(),
 			});
+
+			const estoque = await tx.orm.public.Estoque.where({
+				unidadeId: dados.unidadeId,
+				produtoId: item.produtoId,
+			}).first();
+
+			if (!estoque) {
+				throw new Error('Estoque não encontrado');
+			}
+
+			const novaQuantidade = estoque.quantidade - item.quantidade;
+
+			await tx.orm.public.Estoque.where({ id: estoque.id }).update({
+				quantidade: novaQuantidade,
+			});
+
+			await tx.orm.public.HistoricoStatusPedido.create({
+				pedidoId: pedido.id,
+				status: 'CRIADO',
+				observacao: 'Pedido criado',
+			});
 		}
 
 		return pedido;
