@@ -4,6 +4,7 @@ import {
 	buscarProdutoPedido,
 	buscarEstoquePedido,
 	criarPedido,
+	buscarPedidoPorId,
 } from '../services/pedido.service.js';
 
 const canaisValidos = ['APP', 'TOTEM', 'BALCAO', 'PICKUP', 'WEB'];
@@ -117,6 +118,34 @@ export async function postPedido(req: Request, res: Response) {
 		});
 	} catch (error) {
 		console.error('Erro ao criar pedido:', error);
+
+		return res.status(500).json({
+			erro: 'Erro interno do servidor',
+		});
+	}
+}
+
+export async function getPedidoPorId(req: Request<{ id: string }>, res: Response) {
+	try {
+		const { id } = req.params;
+
+		if (!id) {
+			return res.status(400).json({
+				erro: 'ID do pedido não informado',
+			});
+		}
+
+		const pedido = await buscarPedidoPorId(id);
+
+		if (!pedido) {
+			return res.status(404).json({
+				erro: 'Pedido não encontrado',
+			});
+		}
+
+		return res.status(200).json(pedido);
+	} catch (error) {
+		console.error('Erro ao buscar pedido:', error);
 
 		return res.status(500).json({
 			erro: 'Erro interno do servidor',

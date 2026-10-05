@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { postPedido } from '../controllers/pedido.controller.js';
+
+import { postPedido, getPedidoPorId } from '../controllers/pedido.controller.js';
 
 const pedidoRouter = Router();
 
@@ -91,7 +92,58 @@ const pedidoRouter = Router();
  *       500:
  *         description: Erro interno do servidor.
  */
-
 pedidoRouter.post('/', postPedido);
+
+/**
+ * @openapi
+ * /pedidos/{id}:
+ *   get:
+ *     summary: Busca um pedido pelo ID
+ *     description: Retorna os dados de um pedido específico.
+ *     tags:
+ *       - Pedidos
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID do pedido
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         example: "5a5ae03a-ad14-4c11-8dfb-7a40bb84c50f"
+ *     responses:
+ *       200:
+ *         description: Pedido encontrado com sucesso.
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: "5a5ae03a-ad14-4c11-8dfb-7a40bb84c50f"
+ *               clienteId: null
+ *               unidadeId: "e06836f5-d0f1-42ae-a77c-d79336b717c3"
+ *               canalPedido: "APP"
+ *               status: "PAGO"
+ *               valorTotal: "12.5"
+ *               criadoEm: "2026-10-05 12:46:12.914402+00"
+ *               atualizadoEm: "2026-10-05 12:52:13.316+00"
+ *       400:
+ *         description: ID do pedido não informado.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "ID do pedido não informado"
+ *       404:
+ *         description: Pedido não encontrado.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Pedido não encontrado"
+ *       500:
+ *         description: Erro interno do servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Erro interno do servidor"
+ */
+pedidoRouter.get('/:id', getPedidoPorId);
 
 export default pedidoRouter;

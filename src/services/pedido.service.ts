@@ -69,3 +69,7 @@ export async function criarPedido(dados: {
 		return pedido;
 	});
 }
+
+export async function buscarPedidoPorId(id: string) {
+	return db.orm.public.Pedido.where({ id }).first();
+}
