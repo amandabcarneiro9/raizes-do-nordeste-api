@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { postPagamento } from '../controllers/pagamento.controller.js';
 
 const pagamentoRouter = Router();
@@ -8,7 +9,7 @@ const pagamentoRouter = Router();
  * /pagamentos:
  *   post:
  *     summary: Processa um pagamento simulado
- *     description: Simula o processamento do pagamento e, quando aprovado, atualiza o status do pedido para PAGO.
+ *     description: Simula o pagamento de um pedido. Quando aprovado, atualiza o status do pedido para PAGO e registra a alteração no histórico.
  *     tags:
  *       - Pagamentos
  *     requestBody:
@@ -37,7 +38,7 @@ const pagamentoRouter = Router();
  *                 example: APROVADO
  *     responses:
  *       201:
- *         description: Pagamento processado.
+ *         description: Pagamento processado com sucesso.
  *         content:
  *           application/json:
  *             example:
@@ -65,6 +66,10 @@ const pagamentoRouter = Router();
  *               erro: "Pedido não encontrado"
  *       500:
  *         description: Erro interno do servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Erro interno do servidor"
  */
 pagamentoRouter.post('/', postPagamento);
 
