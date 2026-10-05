@@ -6,6 +6,7 @@ import unidadeRouter from './routes/unidade.routes.js';
 import estoqueRouter from './routes/estoque.routes.js';
 import pedidoRouter from './routes/pedido.routes.js';
 import pagamentoRouter from './routes/pagamento.routes.js';
+import usuarioRouter from './routes/usuario.routes.js';
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use('/unidades', unidadeRouter);
 app.use('/estoque', estoqueRouter);
 
 app.use('/pagamentos', pagamentoRouter);
+
+app.use('/usuarios', usuarioRouter);
 
 console.log('Registrando /pedidos');
 app.use('/pedidos', pedidoRouter);
