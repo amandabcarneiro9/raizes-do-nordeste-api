@@ -7,6 +7,7 @@ import estoqueRouter from './routes/estoque.routes.js';
 import pedidoRouter from './routes/pedido.routes.js';
 import pagamentoRouter from './routes/pagamento.routes.js';
 import usuarioRouter from './routes/usuario.routes.js';
+import authRouter from './routes/auth.routes.js';
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.use('/estoque', estoqueRouter);
 app.use('/pagamentos', pagamentoRouter);
 
 app.use('/usuarios', usuarioRouter);
+
+app.use('/auth', authRouter);
 
 console.log('Registrando /pedidos');
 app.use('/pedidos', pedidoRouter);
