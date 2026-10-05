@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getProdutos, postProduto } from '../controllers/produto.controller.js';
+import { autenticar, autorizar } from '../middlewares/auth.middleware.js';
 
 const produtoRouter = Router();
 
@@ -90,6 +91,6 @@ const produtoRouter = Router();
  */
 
 produtoRouter.get('/', getProdutos);
-produtoRouter.post('/', postProduto);
+produtoRouter.post('/', autenticar, autorizar('ADMIN'), postProduto);
 
 export default produtoRouter;
