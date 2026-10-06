@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getEstoques, postEstoque } from '../controllers/estoque.controller.js';
+import { autenticar, autorizar } from '../middlewares/auth.middleware.js';
 
 const estoqueRouter = Router();
 
@@ -42,6 +43,8 @@ const estoqueRouter = Router();
  *     description: Cria um registro de estoque para um produto em uma unidade.
  *     tags:
  *       - Estoque
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -82,9 +85,13 @@ const estoqueRouter = Router();
  *                 - "Já existe estoque para este produto nesta unidade"
  *       500:
  *         description: Erro interno do servidor.
+ *       401:
+ *         description: Token não informado, inválido ou expirado.
+ *       403:
+ *         description: Usuário autenticado sem permissão para esta operação.
  */
 
 estoqueRouter.get('/', getEstoques);
-estoqueRouter.post('/', postEstoque);
+estoqueRouter.post('/', autenticar, autorizar('ADMIN'), postEstoque);
 
 export default estoqueRouter;

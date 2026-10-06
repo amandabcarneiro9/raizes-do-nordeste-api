@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getUnidades, postUnidade } from '../controllers/unidade.controller.js';
+import { autenticar, autorizar } from '../middlewares/auth.middleware.js';
 
 const unidadeRouter = Router();
 
@@ -39,6 +40,8 @@ const unidadeRouter = Router();
  *     description: Cria uma nova unidade no sistema.
  *     tags:
  *       - Unidades
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -78,9 +81,13 @@ const unidadeRouter = Router();
  *                 - "nome é obrigatório"
  *       500:
  *         description: Erro interno do servidor.
+ *       401:
+ *         description: Token não informado, inválido ou expirado.
+ *       403:
+ *         description: Usuário autenticado sem permissão para esta operação.
  */
 
 unidadeRouter.get('/', getUnidades);
-unidadeRouter.post('/', postUnidade);
+unidadeRouter.post('/', autenticar, autorizar('ADMIN'), postUnidade);
 
 export default unidadeRouter;
