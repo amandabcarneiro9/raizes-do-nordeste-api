@@ -1,5 +1,7 @@
 import { Router } from 'express';
+
 import { getProdutos, postProduto } from '../controllers/produto.controller.js';
+
 import { autenticar, autorizar } from '../middlewares/auth.middleware.js';
 
 const produtoRouter = Router();
@@ -43,6 +45,8 @@ const produtoRouter = Router();
  *     description: Cria um novo produto no sistema.
  *     tags:
  *       - Produtos
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -86,11 +90,24 @@ const produtoRouter = Router();
  *               erro: "Campos obrigatórios não informados"
  *               detalhes:
  *                 - "nome e preco são obrigatórios"
+ *       401:
+ *         description: Token não informado, inválido ou expirado.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Token não informado"
+ *       403:
+ *         description: Usuário autenticado sem permissão para esta operação.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Acesso não autorizado"
  *       500:
  *         description: Erro interno do servidor.
  */
 
 produtoRouter.get('/', getProdutos);
+
 produtoRouter.post('/', autenticar, autorizar('ADMIN'), postProduto);
 
 export default produtoRouter;
