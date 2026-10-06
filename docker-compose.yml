@@ -1,0 +1,16 @@
+services:
+ postgres:
+  image: postgres:17
+  container_name: raizes-postgres
+  restart: unless-stopped
+  environment:
+   POSTGRES_USER: raizes
+   POSTGRES_PASSWORD: raizes123
+   POSTGRES_DB: raizes_do_nordeste
+  ports:
+   - '5432:5432'
+  volumes:
+   - raizes_postgres_data:/var/lib/postgresql/data
+
+volumes:
+ raizes_postgres_data:
