@@ -1,0 +1,1072 @@
+{
+  "info": {
+    "_postman_id": "raizes-do-nordeste-api",
+    "name": "Raizes-do-nordeste",
+    "description": "Coleção de testes da API Raízes do Nordeste.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Autenticação",
+      "item": [
+        {
+          "name": "Login ADMIN - 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@raizes.com\",\n  \"senha\": \"Admin123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Resposta deve conter um token', function () {",
+                  "  pm.expect(resposta.token).to.be.a('string');",
+                  "  pm.expect(resposta.token).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set(",
+                  "  'tokenAdminRunner',",
+                  "  resposta.token",
+                  ");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login senha invalida - 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@raizes.com\",\n  \"senha\": \"senha-errada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status deve ser 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Resposta deve conter erro', function () {",
+                  "  pm.expect(resposta).to.have.property('erro');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login ATENDENTE - 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"atendente2@raizes.com\",\n  \"senha\": \"Atendente123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Resposta deve conter um token', function () {",
+                  "  pm.expect(resposta.token).to.be.a('string');",
+                  "  pm.expect(resposta.token).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set(",
+                  "  'tokenAtendente',",
+                  "  resposta.token",
+                  ");"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02-Products",
+      "item": [
+        {
+          "name": "Criar produto como ADMIN - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Produto Teste Postman\",\n  \"descricao\": \"Produto criado nos testes da API\",\n  \"preco\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Produto deve possuir ID', function () {",
+                  "  pm.expect(resposta.id).to.be.a('string');",
+                  "  pm.expect(resposta.id).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('produtoId', resposta.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar produto sem token - 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Produto Teste Postman\",\n  \"descricao\": \"Produto criado nos testes da API\",\n  \"preco\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status deve ser 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Deve informar que o token não foi fornecido', function () {",
+                  "  pm.expect(resposta.erro).to.eql('Token não informado');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar produto como ATENDENTE - 403",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAtendente}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Produto Teste Postman\",\n  \"descricao\": \"Produto criado nos testes da API\",\n  \"preco\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status deve ser 403', function () {",
+                  "  pm.response.to.have.status(403);",
+                  "});",
+                  "",
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Deve informar acesso não autorizado', function () {",
+                  "  pm.expect(resposta.erro).to.eql('Acesso não autorizado');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Unidades",
+      "item": [
+        {
+          "name": "Criar unidade como ADMIN - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/unidades",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "unidades"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Unidade Centro\",\n  \"endereco\": \"Rua Principal, 100\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Unidade deve possuir ID', function () {",
+                  "  pm.expect(resposta.id).to.be.a('string');",
+                  "  pm.expect(resposta.id).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('unidadeTesteId', resposta.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Estoque",
+      "item": [
+        {
+          "name": "Criar estoque - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estoque",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unidadeId\": \"{{unidadeTesteId}}\",\n  \"produtoId\": \"{{produtoId}}\",\n  \"quantidade\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Estoque deve ser criado com quantidade 50', function () {",
+                  "  pm.expect(resposta.quantidade).to.eql(50);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Pedidos",
+      "item": [
+        {
+          "name": "Criar pedido válido - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unidadeId\": \"{{unidadeTesteId}}\",\n  \"canalPedido\": \"APP\",\n  \"itens\": [\n    {\n      \"produtoId\": \"{{produtoId}}\",\n      \"quantidade\": 2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "const pedido = resposta.pedido;",
+                  "",
+                  "pm.test('Status deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Pedido deve possuir ID', function () {",
+                  "  pm.expect(pedido.id).to.be.a('string');",
+                  "  pm.expect(pedido.id).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test('Pedido deve iniciar com status CRIADO', function () {",
+                  "  pm.expect(pedido.status).to.eql('CRIADO');",
+                  "});",
+                  "",
+                  "pm.test('Canal do pedido deve ser APP', function () {",
+                  "  pm.expect(pedido.canalPedido).to.eql('APP');",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('pedidoAprovadoId', pedido.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar pedido com produto inexistente - 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unidadeId\": \"{{unidadeTesteId}}\",\n  \"canalPedido\": \"APP\",\n  \"itens\": [\n    {\n      \"produtoId\": \"00000000-0000-0000-0000-000000000001\",\n      \"quantidade\": 2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 404', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Deve informar que o produto não foi encontrado', function () {",
+                  "  pm.expect(resposta.erro).to.eql('Produto não encontrado');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar pedido com estoque insuficiente - 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unidadeId\": \"{{unidadeTesteId}}\",\n  \"canalPedido\": \"APP\",\n  \"itens\": [\n    {\n      \"produtoId\": \"{{produtoId}}\",\n      \"quantidade\": 9999\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 409', function () {",
+                  "  pm.response.to.have.status(409);",
+                  "});",
+                  "",
+                  "pm.test('Deve informar estoque insuficiente', function () {",
+                  "  pm.expect(resposta.erro).to.eql('Estoque insuficiente');",
+                  "});",
+                  "",
+                  "pm.test('Resposta deve conter uma mensagem de erro', function () {",
+                  "  pm.expect(resposta).to.have.property('erro');",
+                  "  pm.expect(resposta.erro).to.be.a('string');",
+                  "  pm.expect(resposta.erro).to.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar pedido para pagamento negado - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unidadeId\": \"{{unidadeTesteId}}\",\n  \"canalPedido\": \"APP\",\n  \"itens\": [\n    {\n      \"produtoId\": \"{{produtoId}}\",\n      \"quantidade\": 2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "const pedido = resposta.pedido;",
+                  "",
+                  "pm.test('Status deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Pedido deve possuir ID', function () {",
+                  "  pm.expect(pedido.id).to.be.a('string');",
+                  "  pm.expect(pedido.id).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test('Pedido deve iniciar com status CRIADO', function () {",
+                  "  pm.expect(pedido.status).to.eql('CRIADO');",
+                  "});",
+                  "",
+                  "pm.test('Canal do pedido deve ser APP', function () {",
+                  "  pm.expect(pedido.canalPedido).to.eql('APP');",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('pedidoNegadoId', pedido.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Pagamentos",
+      "item": [
+        {
+          "name": "Pagamento aprovado - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": \"{{pedidoAprovadoId}}\",\n  \"metodo\": \"CARTAO\",\n  \"resultadoSimulado\": \"APROVADO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "const pagamento = resposta.pagamento;",
+                  "",
+                  "pm.test('Status deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Pagamento deve estar APROVADO', function () {",
+                  "  pm.expect(pagamento.status).to.eql('APROVADO');",
+                  "});",
+                  "",
+                  "pm.test('Pagamento deve pertencer ao pedido criado', function () {",
+                  "  pm.expect(pagamento.pedidoId).to.eql(",
+                  "    pm.collectionVariables.get('pedidoAprovadoId')",
+                  "  );",
+                  "});",
+                  "",
+                  "pm.test('Pagamento deve possuir transação', function () {",
+                  "  pm.expect(pagamento.transacaoId).to.be.a('string');",
+                  "  pm.expect(pagamento.transacaoId).to.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar pedido após pagamento aprovado - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos/{{pedidoAprovadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{{pedidoAprovadoId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status deve ser 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Pedido consultado deve ser o pedido criado', function () {",
+                  "    pm.expect(resposta.id).to.eql(",
+                  "        pm.collectionVariables.get('pedidoAprovadoId')",
+                  "    );",
+                  "});",
+                  "",
+                  "pm.test('Pedido deve estar com status PAGO', function () {",
+                  "    pm.expect(resposta.status).to.eql('PAGO');",
+                  "});",
+                  "",
+                  "pm.test('Canal do pedido deve ser APP', function () {",
+                  "    pm.expect(resposta.canalPedido).to.eql('APP');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pagamento negado - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": \"{{pedidoNegadoId}}\",\n  \"metodo\": \"CARTAO\",\n  \"resultadoSimulado\": \"NEGADO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "const pagamento = resposta.pagamento;",
+                  "",
+                  "pm.test('Status HTTP deve ser 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Pagamento deve estar NEGADO', function () {",
+                  "  pm.expect(pagamento.status).to.eql('NEGADO');",
+                  "});",
+                  "",
+                  "pm.test('Deve informar que o pagamento foi negado', function () {",
+                  "  pm.expect(resposta.mensagem).to.eql('Pagamento negado');",
+                  "  pm.expect(pagamento.mensagem).to.eql('Pagamento negado');",
+                  "});",
+                  "",
+                  "pm.test('Pagamento deve pertencer ao pedido informado', function () {",
+                  "  pm.expect(pagamento.pedidoId).to.eql(",
+                  "    pm.collectionVariables.get('pedidoNegadoId')",
+                  "  );",
+                  "});",
+                  "",
+                  "pm.test('Pagamento deve possuir ID de transação', function () {",
+                  "  pm.expect(pagamento.transacaoId).to.be.a('string');",
+                  "  pm.expect(pagamento.transacaoId).to.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar pedido com pagamento negado - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos/{{pedidoNegadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{{pedidoNegadoId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAdminRunner}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const resposta = pm.response.json();",
+                  "",
+                  "pm.test('Status HTTP deve ser 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Pedido consultado deve ser o pedido do pagamento negado', function () {",
+                  "  pm.expect(resposta.id).to.eql(",
+                  "    pm.collectionVariables.get('pedidoNegadoId')",
+                  "  );",
+                  "});",
+                  "",
+                  "pm.test('Pedido deve permanecer CRIADO após pagamento negado', function () {",
+                  "  pm.expect(resposta.status).to.eql('CRIADO');",
+                  "});",
+                  "",
+                  "pm.test('Canal do pedido deve ser APP', function () {",
+                  "  pm.expect(resposta.canalPedido).to.eql('APP');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "tokenAtendente",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "unidadeTesteId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "produtoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pedidoNegadoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pedidoAprovadoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tokenAdminRunner",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
