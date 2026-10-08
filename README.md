@@ -1,12 +1,40 @@
-# raizes-do-nordeste-api
+# Raízes do Nordeste API
 
-REST API for managing users, orders, inventory, and payments for the Raízes do Nordeste restaurant chain. Built with Node.js and TypeScript.
+API REST desenvolvida para o estudo de caso da rede de restaurantes Raízes do Nordeste.
 
-Opção recomendada:
-Docker / Docker Compose
-→ docker compose up -d
+O projeto foi desenvolvido em Node.js com TypeScript e tem como objetivo gerenciar usuários, unidades, produtos, estoque, pedidos e pagamentos.
 
-Alternativa:
-PostgreSQL 17 instalado localmente
-→ criar banco raizes_do_nordeste
-→ configurar DATABASE_URL
+O fluxo principal implementado é:
+
+**Pedido → Pagamento → Atualização de status**
+
+## Tecnologias utilizadas
+
+- Node.js
+- TypeScript
+- Express
+- PostgreSQL 17
+- Prisma ORM
+- Docker e Docker Compose
+- JWT para autenticação
+- bcrypt para hash de senhas
+- Swagger / OpenAPI
+- Postman
+
+## Pré-requisitos
+
+Para executar o projeto é necessário ter instalado:
+
+- Node.js
+- npm
+- Docker e Docker Compose
+
+O PostgreSQL também pode ser executado localmente sem Docker.
+
+## Banco de dados
+
+A forma recomendada para executar o PostgreSQL neste projeto é utilizando Docker.
+
+```bash
+docker compose up -d
+```
