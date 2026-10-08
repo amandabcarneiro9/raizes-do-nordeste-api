@@ -166,3 +166,101 @@ A documentação Swagger está disponível em:
 ```text
 http://localhost:3000/api-docs
 ```
+
+## Autenticação e controle de acesso
+
+A API utiliza autenticação baseada em **JWT (JSON Web Token)**.
+
+O login é realizado através do endpoint:
+
+```http
+POST /auth/login
+```
+
+Exemplo de requisição:
+
+```json
+{
+	"email": "admin@raizes.com",
+	"senha": "Admin123!"
+}
+```
+
+Quando as credenciais são válidas, a API retorna um token JWT que deve ser enviado nas requisições para rotas protegidas:
+
+```text
+Authorization: Bearer <token>
+```
+
+As senhas não são armazenadas diretamente no banco de dados. Antes do armazenamento, é gerado um hash utilizando `bcrypt`.
+
+### Perfis de acesso
+
+A aplicação possui controle de acesso baseado no perfil do usuário.
+
+Os perfis utilizados são:
+
+- `ADMIN` — possui acesso às operações administrativas da API.
+- `ATENDENTE` — usuário autenticado com acesso limitado às operações permitidas para esse perfil.
+
+Algumas operações de cadastro e gerenciamento, como criação de produtos, unidades, estoque e usuários, são restritas ao perfil `ADMIN`.
+
+A API utiliza os seguintes códigos HTTP para controle de acesso:
+
+- `401 Unauthorized` — token ausente, inválido ou expirado.
+- `403 Forbidden` — usuário autenticado, mas sem permissão para executar a operação.
+
+## Fluxo principal
+
+O MVP implementado neste projeto corresponde ao fluxo:
+
+**Pedido → Pagamento → Atualização de status**
+
+### 1. Criação do pedido
+
+Ao criar um pedido, a API:
+
+1. verifica se a unidade existe;
+2. verifica se os produtos informados existem;
+3. verifica a disponibilidade dos produtos no estoque da unidade;
+4. calcula o valor total;
+5. cria o pedido e seus itens;
+6. atualiza o estoque;
+7. registra o status inicial do pedido no histórico.
+
+Um pedido recém-criado inicia com o status:
+
+```text
+CRIADO
+```
+
+O pedido também registra o canal em que foi realizado:
+
+```text
+APP
+TOTEM
+BALCAO
+PICKUP
+WEB
+```
+
+### 2. Pagamento
+
+O pagamento é uma simulação de integração com um serviço externo.
+
+Para fins acadêmicos e de testes, a API permite simular dois resultados:
+
+```text
+APROVADO
+NEGADO
+```
+
+Quando o pagamento é aprovado, o pagamento é registrado com status `APROVADO` e o pedido é atualizado para:
+
+```text
+PAGO
+```
+
+A mudança também é registrada no histórico de status do pedido.
+
+Quando o pagamento é negado, o pagamento é registrado como `NEGADO` e o pedido permanece com status `CRIADO`, permitindo uma nova tentativa de pagamento.
