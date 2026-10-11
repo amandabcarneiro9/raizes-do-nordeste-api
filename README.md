@@ -41,7 +41,7 @@ cd raizes-do-nordeste-api
 Instale as dependências:
 
 ```bash
-npm install
+npm ci
 ```
 
 Crie o arquivo `.env` a partir do `.env.example`:
