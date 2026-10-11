@@ -24,7 +24,6 @@ export async function criarEstoque(dados: {
 	});
 }
 
-// impedir que a mesma combinação unidade + produto seja cadastrada duas vezes
 export async function buscarEstoque(unidadeId: string, produtoId: string) {
 	return db.orm.public.Estoque.where({
 		unidadeId,

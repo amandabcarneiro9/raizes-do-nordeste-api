@@ -57,6 +57,7 @@ export async function postEstoque(req: Request, res: Response) {
 
 		const estoqueExistente = await buscarEstoque(unidadeId, produtoId);
 
+		// impedir que a mesma combinação unidade + produto seja cadastrada duas vezes
 		if (estoqueExistente) {
 			return res.status(409).json({
 				erro: 'Estoque já cadastrado',
