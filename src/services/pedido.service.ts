@@ -58,13 +58,13 @@ export async function criarPedido(dados: {
 			await tx.orm.public.Estoque.where({ id: estoque.id }).update({
 				quantidade: novaQuantidade,
 			});
-
-			await tx.orm.public.HistoricoStatusPedido.create({
-				pedidoId: pedido.id,
-				status: 'CRIADO',
-				observacao: 'Pedido criado',
-			});
 		}
+
+		await tx.orm.public.HistoricoStatusPedido.create({
+			pedidoId: pedido.id,
+			status: 'CRIADO',
+			observacao: 'Pedido criado',
+		});
 
 		return pedido;
 	});
@@ -72,4 +72,12 @@ export async function criarPedido(dados: {
 
 export async function buscarPedidoPorId(id: string) {
 	return db.orm.public.Pedido.where({ id }).first();
+}
+
+export async function buscarPedidosPorCanal(
+	canalPedido: 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB',
+) {
+	return db.orm.public.Pedido.where({
+		canalPedido,
+	}).all();
 }

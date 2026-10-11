@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { postPedido, getPedidoPorId } from '../controllers/pedido.controller.js';
+import { postPedido, getPedidoPorId, getPedidos } from '../controllers/pedido.controller.js';
 
 const pedidoRouter = Router();
 
@@ -145,5 +145,56 @@ pedidoRouter.post('/', postPedido);
  *               erro: "Erro interno do servidor"
  */
 pedidoRouter.get('/:id', getPedidoPorId);
+
+/**
+ * @openapi
+ * /pedidos:
+ *   get:
+ *     summary: Lista pedidos por canal
+ *     description: Retorna os pedidos filtrados pelo canal de origem.
+ *     tags:
+ *       - Pedidos
+ *     parameters:
+ *       - in: query
+ *         name: canalPedido
+ *         required: true
+ *         description: Canal de origem do pedido
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - APP
+ *             - TOTEM
+ *             - BALCAO
+ *             - PICKUP
+ *             - WEB
+ *         example: APP
+ *     responses:
+ *       200:
+ *         description: Pedidos encontrados com sucesso.
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: "58218539-7353-4a2b-802e-ae37157bc747"
+ *                 clienteId: null
+ *                 unidadeId: "e06836f5-d0f1-42ae-a77c-d79336b717c3"
+ *                 canalPedido: "APP"
+ *                 status: "CRIADO"
+ *                 valorTotal: "25"
+ *       400:
+ *         description: Canal de pedido ausente ou inválido.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Canal de pedido inválido"
+ *               detalhes:
+ *                 - "canalPedido deve ser APP, TOTEM, BALCAO, PICKUP ou WEB"
+ *       500:
+ *         description: Erro interno do servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               erro: "Erro interno do servidor"
+ */
+pedidoRouter.get('/', getPedidos);
 
 export default pedidoRouter;

@@ -5,6 +5,7 @@ import {
 	buscarEstoquePedido,
 	criarPedido,
 	buscarPedidoPorId,
+	buscarPedidosPorCanal,
 } from '../services/pedido.service.js';
 
 const canaisValidos = ['APP', 'TOTEM', 'BALCAO', 'PICKUP', 'WEB'];
@@ -146,6 +147,38 @@ export async function getPedidoPorId(req: Request<{ id: string }>, res: Response
 		return res.status(200).json(pedido);
 	} catch (error) {
 		console.error('Erro ao buscar pedido:', error);
+
+		return res.status(500).json({
+			erro: 'Erro interno do servidor',
+		});
+	}
+}
+
+export async function getPedidos(req: Request, res: Response) {
+	try {
+		const canalPedido = req.query['canalPedido'];
+
+		if (!canalPedido || typeof canalPedido !== 'string') {
+			return res.status(400).json({
+				erro: 'Canal de pedido não informado',
+				detalhes: ['Informe canalPedido como APP, TOTEM, BALCAO, PICKUP ou WEB'],
+			});
+		}
+
+		if (!canaisValidos.includes(canalPedido)) {
+			return res.status(400).json({
+				erro: 'Canal de pedido inválido',
+				detalhes: ['canalPedido deve ser APP, TOTEM, BALCAO, PICKUP ou WEB'],
+			});
+		}
+
+		const pedidos = await buscarPedidosPorCanal(
+			canalPedido as 'APP' | 'TOTEM' | 'BALCAO' | 'PICKUP' | 'WEB',
+		);
+
+		return res.status(200).json(pedidos);
+	} catch (error) {
+		console.error('Erro ao buscar pedidos:', error);
 
 		return res.status(500).json({
 			erro: 'Erro interno do servidor',
