@@ -3,6 +3,9 @@
 	"version": "1.0.0",
 	"description": "REST API for managing users, orders, inventory, and payments for the Raízes do Nordeste restaurant chain. Built with Node.js and TypeScript.",
 	"main": "index.js",
+	"engines": {
+		"node": ">=24"
+	},
 	"scripts": {
 		"dev": "tsx watch src/server.ts",
 		"contract:emit": "prisma contract emit",

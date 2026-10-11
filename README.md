@@ -25,7 +25,7 @@ O fluxo principal implementado é:
 
 Para executar o projeto é necessário ter instalado:
 
-- Node.js
+- Node.js 24
 - npm
 - PostgreSQL 17 ou Docker com Docker Compose
 
