@@ -7,26 +7,39 @@ import { db } from './prisma/db.js';
 async function seed() {
 	console.log('Iniciando seed...');
 
-	const emailAdmin = 'admin@raizes.com';
+	await crearUsuario('Administrador', 'admin@raizes.com', 'Admin123!', 'ADMIN');
 
-	const adminExistente = await db.orm.public.Usuario.where({ email: emailAdmin }).first();
+	await crearUsuario('Atendente', 'atendente2@raizes.com', 'Atendente123!', 'ATENDENTE');
 
-	if (adminExistente) {
-		console.log('Administrador já cadastrado.');
+	await db.close();
+}
+
+async function crearUsuario(
+	nome: string,
+	email: string,
+	senha: string,
+	perfil: 'ADMIN' | 'ATENDENTE',
+) {
+	const usuario = await db.orm.public.Usuario.where({
+		email,
+	}).first();
+
+	if (usuario) {
+		console.log(`${nome} já cadastrado.`);
 		return;
 	}
 
-	const senhaHash = await bcrypt.hash('Admin123!', 10);
+	const senhaHash = await bcrypt.hash(senha, 10);
 
 	await db.orm.public.Usuario.create({
-		nome: 'Administrador',
-		email: emailAdmin,
+		nome,
+		email,
 		senhaHash,
-		perfil: 'ADMIN',
+		perfil,
 		ativo: true,
 	});
 
-	console.log('Administrador criado com sucesso.');
+	console.log(`${nome} criado com sucesso.`);
 }
 
 seed().catch((erro) => {

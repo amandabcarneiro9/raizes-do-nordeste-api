@@ -155,17 +155,15 @@ A API ficará disponível em:
 http://localhost:3000
 ```
 
-Para verificar se a aplicação está funcionando:
+Para verificar se a aplicação está funcionando, execute:
 
-```text
-http://localhost:3000/health
+```bash
+curl http://localhost:3000/health
 ```
 
-A documentação Swagger está disponível em:
+A documentação Swagger está disponível em [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
-```text
-http://localhost:3000/api-docs
-```
+````
 
 ## Autenticação e controle de acesso
 
@@ -175,7 +173,7 @@ O login é realizado através do endpoint:
 
 ```http
 POST /auth/login
-```
+````
 
 Exemplo de requisição:
 
@@ -269,18 +267,6 @@ Quando o pagamento é negado, o pagamento é registrado como `NEGADO` e o pedido
 
 A API possui documentação interativa desenvolvida com Swagger/OpenAPI.
 
-Com a aplicação em execução:
-
-```bash
-npm run dev
-```
-
-acesse no navegador:
-
-```text
-http://localhost:3000/api-docs
-```
-
 O Swagger apresenta os endpoints disponíveis, métodos HTTP, parâmetros, corpos das requisições, respostas esperadas e códigos de status.
 
 ### Como testar os endpoints
@@ -345,12 +331,6 @@ A Collection utiliza a variável:
 
 ```text
 baseUrl = http://localhost:3000
-```
-
-Portanto, antes de executar os testes, certifique-se de que a API esteja em execução:
-
-```bash
-npm run dev
 ```
 
 ### Executando os testes
